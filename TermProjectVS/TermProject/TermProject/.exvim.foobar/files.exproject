@@ -1,0 +1,17 @@
+" Press <F1> for help
+
+-[F]TermProject {
+ |-Backend.cpp
+ |-Backend.h
+ |-Lesson.cpp
+ |-Lesson.h
+ |-main.cpp
+ |-main.h
+ |-Storage.cpp
+ |-Storage.h
+ |-Student.cpp
+ |-Student.h
+ |-Term.cpp
+ |-Term.h }
+
+
