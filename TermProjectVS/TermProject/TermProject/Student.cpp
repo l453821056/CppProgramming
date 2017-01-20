@@ -9,12 +9,12 @@ int Student::getOverallCredit()
     reNewStudentContentAfterTermsChanged();
     return OverallCredit;
 }
-int Student::getOverallGrade()
+double Student::getOverallGrade()
 {
     reNewStudentContentAfterTermsChanged();
     return OverallGrade;
 }
-int Student::getOverallGradeExpectPubEle()
+double Student::getOverallGradeExpectPubEle()
 {
     reNewStudentContentAfterTermsChanged();
     return OverallGradeExpectPubEle;
@@ -117,25 +117,26 @@ int Student::getStudentId()
 }
 void Student::reNewStudentContentAfterTermsChanged()
 {
-    if(TermsChanged)
-    {
-        int SumOfCredit=0;
-        int SumOfGrade=0;
-        int SumOfCreditExpectPubEle=0;
-        int SumOfGradeExpectPubEle=0;
-        for(int i=0;i<NumberOfTerm;i++)
-        {
-            SumOfCredit+=Terms[i].getCredit();
-            SumOfGrade+=Terms[i].getCredit()*Terms[i].getAverage();
-            SumOfCreditExpectPubEle=Terms[i].getCreditExpectPubEle();
-            SumOfGradeExpectPubEle+=Terms[i].getCreditExpectPubEle()*Terms[i].getAverageExpectPubEle();
-        }
-        this->OverallCredit=SumOfCredit;
-        this->OverallGrade=SumOfGrade/SumOfCredit;
-        this->OverallCreditExpectPubEle=SumOfCreditExpectPubEle;
-        this->OverallGradeExpectPubEle=SumOfGradeExpectPubEle/SumOfCreditExpectPubEle;
-        this->TermsChanged=false;
-    }
+	//旧的更新学分方式，现已经弃用
+    //if(TermsChanged)
+    //{
+    //    double SumOfCredit=0;
+    //    double SumOfGrade=0;
+    //    double SumOfCreditExpectPubEle=0;
+    //    double SumOfGradeExpectPubEle=0;
+    //    for(int i=0;i<NumberOfTerm;i++)
+    //    {
+    //        SumOfCredit+=Terms[i].getCredit();
+    //        SumOfGrade+=Terms[i].getCredit()*Terms[i].getAverage();
+    //        SumOfCreditExpectPubEle=Terms[i].getCreditExpectPubEle();
+    //        SumOfGradeExpectPubEle+=Terms[i].getCreditExpectPubEle()*Terms[i].getAverageExpectPubEle();
+    //    }
+    //    this->OverallCredit=SumOfCredit;
+    //    this->OverallGrade=SumOfGrade/SumOfCredit;
+    //    this->OverallCreditExpectPubEle=SumOfCreditExpectPubEle;
+    //    this->OverallGradeExpectPubEle=SumOfGradeExpectPubEle/SumOfCreditExpectPubEle;
+    //    this->TermsChanged=false;
+    //}
 }
 string Student::getSchool()
 {
@@ -179,10 +180,19 @@ int Student::print()
         for(int j=1;j<=getTotalTermOfYear(i);j++)
         {
         int TotalRank=getNumberOfTerm(i,j);
-        cout<<setfill(' ') << "  " <<setw(4)<<TotalRank << "  " <<i<<"-"<<i+1<<setw(6)<<j<<setw(10)<<Terms[TotalRank].getNumberOfLessonRefer();
+        cout<<setfill(' ') <<right<< "  " <<setw(4)<<TotalRank << "  " <<i<<"-"<<i+1<<setw(6)<<j<<setw(10)<<Terms[TotalRank].getNumberOfLessonRefer();
         cout<<"  "<<setw(4)<<Terms[TotalRank].getCredit()<<setw(10)<<Terms[TotalRank].getAverage()<<setw(12)<<Terms[TotalRank].getAverageExpectPubEle()<<RESET<<endl;
         }
     }
     return 0;
+}
+
+int Student::RefreshGpa(const Lesson * lesson)
+{
+	OverallGrade = (OverallCredit*OverallGrade + (lesson->Credit*lesson->Grade)) / (OverallCredit + lesson->Credit);
+	OverallCreditExpectPubEle=(OverallCreditExpectPubEle*OverallGradeExpectPubEle+ (lesson->Type != 3 ? lesson->Credit : 0) * lesson->Grade) / (OverallCreditExpectPubEle + (lesson->Type != 3 ? lesson->Credit : 0));
+	OverallCredit += lesson->Credit;
+	OverallCreditExpectPubEle+= lesson->Type != 3 ? lesson->Credit : 0;
+	return 0;
 }
 

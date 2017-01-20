@@ -19,6 +19,7 @@ Lesson::Lesson(){
     Finished=false;
     Credit=1;
     Grade=0;
+	Grade_Ori = 0;
     WeekTimes=0;
 }
 int Lesson::init()
@@ -136,6 +137,11 @@ int Lesson::init()
     cin>>Input;
     TeacherName=Input;
 
+	cout << "请输入成绩，若无请输入0" << endl;
+	promote("Input");
+	cin >> Result;
+	Grade_Ori = Result;
+	Grade = (Grade_Ori - 50) / 10.0;
     return 0;
     }
 
@@ -147,4 +153,20 @@ string Lesson::getGrade()
 		return to_string(this->Grade);
 	}
 	return 0;
+}
+
+void Lesson::UpdateScore()
+{
+	for (auto observer : observers_) {
+		observer->Notify(this);
+	}
+}
+
+void Lesson::AttachObserver(LessonObserver *LessonObserver_)
+{
+	observers_.push_back(LessonObserver_);
+}
+
+void LessonObserver::Notify(const Lesson *)
+{
 }

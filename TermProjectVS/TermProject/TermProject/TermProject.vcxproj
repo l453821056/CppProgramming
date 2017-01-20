@@ -70,15 +70,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Backend.h" />
+    <ClInclude Include="Console.hpp" />
     <ClInclude Include="Lesson.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="Term.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Makefile" />
   </ItemGroup>
   <ItemDefinitionGroup />
